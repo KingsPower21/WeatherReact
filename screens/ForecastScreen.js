@@ -37,7 +37,9 @@ export default class ForecastScreen extends React.Component {
 
   getForecast(){
 
-    let url = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + this.state.latitude + '&lon=' + this.state.longitude + '&APPID=c16561a4273e94948971b4fde7dc892c';
+    let url = 'https://api.openweathermap.org/data/2.5/forecast?lat='
+        + this.state.latitude + '&lon=' + this.state.longitude +
+        '&APPID=c16561a4273e94948971b4fde7dc892c';
 
     fetch(url)
         .then(response => response.json())
@@ -50,7 +52,9 @@ export default class ForecastScreen extends React.Component {
 
   render() {
     return (
-        <FlatList data={this.state.forecast.list} style={{marginTop:20}} keyExtractor={item => item.dt_txt} renderItem={({item}) => <Forecast detail={item} location={this.state.forecast.city.name} />} />
+        <FlatList data={this.state.forecast.list} style={{marginTop:20}}
+                  keyExtractor={item => item.dt_txt}
+                  renderItem={({item}) => <Forecast detail={item} location={this.state.forecast.city.name} />} />
     );
   }
 }

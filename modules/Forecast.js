@@ -13,26 +13,26 @@ export default class Forecast extends Component {
         time = hours + ':' + minutes;
 
         return (
-            <Card containerStyle={styles.card}>
-                <Text style={styles.notes}>{this.props.location}</Text>
+            <Card containerStyle={styles.box}>
+                <Text style={styles.location}>{this.props.location}</Text>
 
                 <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
                     <Image style={{width:100, height:100}} source={{uri:"https://openweathermap.org/img/w/" + this.props.detail.weather[0].icon + ".png"}} />
-                    <Text style={styles.time}>{time}</Text>
+                    <Text style={styles.time}>Hour - {time}</Text>
                 </View>
 
                 <Divider style={{ backgroundColor: '#dfe6e9', marginVertical:20}} />
 
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                    <Text style={styles.notes}>{this.props.detail.weather[0].description}</Text>
-                    <Text style={styles.notes}>Temperature: {Math.round( (this.props.detail.main.temp)* 9/5 ) -459 }&#8457;</Text>
+                    <Text style={styles.weather}>{this.props.detail.weather[0].description}</Text>
+                    <Text style={styles.weather}>Temperature: {Math.round( (this.props.detail.main.temp)* 9/5 ) -459 }&#8457;</Text>
                 </View>
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                    <Text style={styles.notes}>Low of: {Math.round( (this.props.detail.main.temp_min)* 9/5 ) -459 }&#8457;</Text>
-                    <Text style={styles.notes}>High of: {Math.round( (this.props.detail.main.temp_max)* 9/5 ) -459 }&#8457;</Text>
+                    <Text style={styles.weather}>Low of: {Math.round( (this.props.detail.main.temp_min)* 9/5 ) -459 }&#8457;</Text>
+                    <Text style={styles.weather}>High of: {Math.round( (this.props.detail.main.temp_max)* 9/5 ) -459 }&#8457;</Text>
                 </View>
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                        <Text style={styles.notes}>Wind Speeds: {this.props.detail.wind.speed} MPH</Text>
+                        <Text style={styles.weather}>Wind Speeds: {this.props.detail.wind.speed} MPH</Text>
                 </View>
             </Card>
         );
@@ -40,7 +40,7 @@ export default class Forecast extends Component {
 }
 
 const styles = StyleSheet.create({
-    card:{
+    box:{
         backgroundColor:'rgba(233, 127, 21, 1)',
         borderWidth:0,
         borderRadius:20
@@ -49,9 +49,14 @@ const styles = StyleSheet.create({
         fontSize:30,
         color:'#fff'
     },
-    notes: {
+    weather: {
         fontSize: 18,
         color:'#fff',
         textTransform:'capitalize'
+    },
+    location: {
+        fontSize: 30,
+        color: '#fff',
+        textTransform: 'capitalize',
     }
 });

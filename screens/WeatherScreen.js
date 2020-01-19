@@ -7,11 +7,11 @@ import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import SearchInput from '../modules/SearchInput';
 import {Ionicons} from '@expo/vector-icons';
+import {Card} from "react-native-elements";
 
 export default class WeatherScreen extends React.Component {
   static navigationOptions = {
     title: 'Weather',
-    textAlign: 'center',
   };
 
   state = {
@@ -20,6 +20,9 @@ export default class WeatherScreen extends React.Component {
     location: '',
     temperature: 0,
     weather: '',
+    tempMin: 0,
+    tempMax: 0,
+    windSpeed: 0,
   };
 
   componentDidMount() {
@@ -42,7 +45,7 @@ export default class WeatherScreen extends React.Component {
 
     this.setState({ loading: true }, async () => {
       try {
-        const { location, weather, temperature } = await fetchOpenWeatherCity(city);
+        const { location, weather, temperature, tempMin, tempMax, windSpeed } = await fetchOpenWeatherCity(city);
 
         this.setState({
           loading: false,
@@ -50,6 +53,10 @@ export default class WeatherScreen extends React.Component {
           location,
           weather,
           temperature,
+          tempMin,
+          tempMax,
+          windSpeed,
+
         });
       } catch (e) {
         this.setState({
@@ -64,7 +71,7 @@ export default class WeatherScreen extends React.Component {
     if (!coords) return;
     this.setState({ loading: true }, async () => {
       try {
-        const { location, weather, temperature } = await fetchOpenWeatherGPS(coords);
+        const { location, weather, temperature, tempMin, tempMax, windSpeed } = await fetchOpenWeatherGPS(coords);
 
         this.setState({
           loading: false,
@@ -72,6 +79,9 @@ export default class WeatherScreen extends React.Component {
           location,
           weather,
           temperature,
+          tempMin,
+          tempMax,
+          windSpeed,
         });
       } catch (e) {
         this.setState({
@@ -83,7 +93,7 @@ export default class WeatherScreen extends React.Component {
   };
 
   render() {
-    const { loading, error, location, weather, temperature } = this.state;
+    const { loading, error, location, weather, temperature, tempMax, tempMin, windSpeed } = this.state;
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -109,11 +119,20 @@ export default class WeatherScreen extends React.Component {
                           <Text style={[styles.largeText, styles.textStyle]}>
                             {location}
                           </Text>
+                          <Text style={[styles.largeText, styles.textStyle]}>
+                            {`${Math.round(temperature)}`+ " \u2109"}
+                          </Text>
                           <Text style={[styles.smallText, styles.textStyle]}>
                             {weather}
                           </Text>
-                          <Text style={[styles.largeText, styles.textStyle]}>
-                            {`${Math.round(temperature)}`+ " \u2109"}
+                          <Text style={[styles.smallText, styles.textStyle]}>
+                             Low of: {`${Math.round(tempMin)}` + "\u2109"}
+                          </Text>
+                          <Text style={[styles.smallText, styles.textStyle]}>
+                            High of: {`${Math.round(tempMax)}` + "\u2109"}
+                          </Text>
+                          <Text style={[styles.smallText, styles.textStyle]}>
+                            Wind: {windSpeed} mph
                           </Text>
                         </View>
                     )}
@@ -153,7 +172,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.2)',
-    paddingHorizontal: 20,
   },
   textStyle: {
     textAlign: 'center',
@@ -164,5 +182,6 @@ const styles = StyleSheet.create({
   },
   smallText: {
     fontSize: 18,
+    padding: 5,
   },
 });
